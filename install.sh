@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Glimra installer: Qt's system libraries via your package manager, Python deps in a private
-# venv, a `glimra` launcher in ~/.local/bin, plus menu entry, icon and file associations.
+# Picora installer: Qt's system libraries via your package manager, Python deps in a private
+# venv, a `picora` launcher in ~/.local/bin, plus menu entry, icon and file associations.
 #
 #   ./install.sh                 install / update for the current user
-#   ./install.sh --set-default   also make Glimra the default app for images and comic archives
+#   ./install.sh --set-default   also make Picora the default app for images and comic archives
 #   ./install.sh --no-deps       skip the package-manager step
 #   ./install.sh --uninstall     remove everything this script installed (keeps your settings)
 set -euo pipefail
 
-APP=glimra
+APP=picora
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 PREFIX="$DATA_HOME/$APP"
@@ -37,7 +37,7 @@ refresh_desktop_db() {
 }
 
 if [[ $UNINSTALL -eq 1 ]]; then
-  say "Removing Glimra"
+  say "Removing Picora"
   rm -rf "$PREFIX" "$BIN/$APP" "$APPS/$APP.desktop" "$ICONS/$APP.svg"
   refresh_desktop_db
   say "Done. Settings were kept in ${XDG_CONFIG_HOME:-$HOME/.config}/$APP"
@@ -78,7 +78,7 @@ install_deps() {
 
 PY="$(command -v python3 || true)"
 [[ -n "$PY" ]] || { echo "python3 not found" >&2; exit 1; }
-"$PY" - <<'EOF' || { echo "Glimra needs Python 3.10 or newer" >&2; exit 1; }
+"$PY" - <<'EOF' || { echo "Picora needs Python 3.10 or newer" >&2; exit 1; }
 import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)
 EOF
 
@@ -108,7 +108,7 @@ cp "$SRC/data/$APP.svg" "$ICONS/$APP.svg"
 refresh_desktop_db
 
 if [[ $SET_DEFAULT -eq 1 ]] && command -v xdg-mime >/dev/null; then
-  say "Setting Glimra as the default image viewer"
+  say "Setting Picora as the default image viewer"
   # images and comic archives only; plain .zip/.rar/.7z stay with your archive manager
   mimes=$(grep '^MimeType=' "$SRC/data/$APP.desktop" | cut -d= -f2 | tr ';' '\n' | \
           grep -E '^image/|comicbook|x-cb[zr7]$' | tr '\n' ' ')
@@ -118,6 +118,6 @@ fi
 
 case ":$PATH:" in
   *":$BIN:"*) ;;
-  *) warn "$BIN is not on your PATH; add it, or start Glimra from the application menu." ;;
+  *) warn "$BIN is not on your PATH; add it, or start Picora from the application menu." ;;
 esac
-say "Installed. Run 'glimra' or find Glimra in your application menu."
+say "Installed. Run 'picora' or find Picora in your application menu."

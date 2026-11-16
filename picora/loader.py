@@ -373,8 +373,8 @@ class ImageCache(QObject):
     def __init__(self, settings, parent=None):
         super().__init__(parent)
         self.s = settings
-        self.pool = ThreadPoolExecutor(max_workers=3, thread_name_prefix="glimra-decode")
-        self.raw_pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="glimra-raw")
+        self.pool = ThreadPoolExecutor(max_workers=3, thread_name_prefix="picora-decode")
+        self.raw_pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="picora-raw")
         self.cache: OrderedDict = OrderedDict()
         self.pending: set = set()
         self.generation = 0

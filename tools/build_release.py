@@ -1,4 +1,4 @@
-"""Build dist/glimra-<version>-linux.tar.gz from the source tree.
+"""Build dist/picora-<version>-linux.tar.gz from the source tree.
 
 Text files are written with LF line endings (the tree may be edited on Windows), shell
 scripts get the executable bit, and caches are left out. Run from any OS:
@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APP = "glimra"
+APP = "picora"
 INCLUDE = ["README.md", "requirements.txt", "install.sh", "run.sh", "data", APP]
 EXECUTABLE = {"install.sh", "run.sh"}
 TEXT_EXT = {".py", ".md", ".txt", ".sh", ".desktop", ".svg"}

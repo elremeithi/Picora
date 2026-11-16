@@ -69,7 +69,7 @@ def _check(targets, report) -> int:
     from .loader import decode
     from .sources import SourceError, open_source
     from .util import is_archive
-    app = QGuiApplication.instance() or QGuiApplication(["glimra", "-platform", "offscreen"])  # noqa: F841
+    app = QGuiApplication.instance() or QGuiApplication(["picora", "-platform", "offscreen"])  # noqa: F841
     lines, bad = [f"{APP_NAME} {__version__} check"], 0
     for t in targets:
         try:

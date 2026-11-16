@@ -174,7 +174,7 @@ class PreferencesDialog(QDialog):
         if winassoc.available():
             f.addRow(QLabel(""))
             f.addRow(QLabel("<b>Windows</b>"))
-            reg = QPushButton("Add Glimra to “Open with” and Default apps...")
+            reg = QPushButton("Add Picora to “Open with” and Default apps...")
             reg.clicked.connect(self._win_register)
             unreg = QPushButton("Remove")
             unreg.clicked.connect(self._win_unregister)
@@ -190,18 +190,18 @@ class PreferencesDialog(QDialog):
         try:
             winassoc.register()
         except OSError as e:
-            QMessageBox.warning(self, "Glimra", f"Could not register:\n{e}")
+            QMessageBox.warning(self, "Picora", f"Could not register:\n{e}")
             return
         QMessageBox.information(
-            self, "Glimra", "Glimra is now listed for images and comic books (.cbz/.cbr/.cb7).\n\n"
+            self, "Picora", "Picora is now listed for images and comic books (.cbz/.cbr/.cb7).\n\n"
             "Windows lets only you choose the default app: in the Settings page that opens next, "
-            "click the file types you want and pick Glimra.")
+            "click the file types you want and pick Picora.")
         winassoc.open_default_apps()
 
     def _win_unregister(self):
         from . import winassoc
         winassoc.unregister()
-        QMessageBox.information(self, "Glimra", "Glimra was removed from “Open with”.")
+        QMessageBox.information(self, "Picora", "Picora was removed from “Open with”.")
 
     def _view(self):
         f = QFormLayout()

@@ -1,7 +1,7 @@
-"""Build dist/glimra_<version>_amd64.deb for Linux Mint / Ubuntu / Debian.
+"""Build dist/picora_<version>_amd64.deb for Linux Mint / Ubuntu / Debian.
 
 Double-clicking the .deb in Mint opens the package installer, which installs the few
-system libraries Qt needs and runs postinst. postinst builds a private venv in /opt/glimra
+system libraries Qt needs and runs postinst. postinst builds a private venv in /opt/picora
 from wheels shipped inside the package, so installing needs no internet and no terminal.
 
 Several dependencies (Pillow, pillow-heif, rawpy, py7zr's compressors) ship one wheel per
@@ -23,7 +23,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APP = "glimra"
+APP = "picora"
 WHEELS = ROOT / "build" / "wheels"
 REQS = [l.strip() for l in (ROOT / "requirements.txt").read_text("utf-8").splitlines()
         if l.strip() and not l.startswith("#")]
@@ -44,7 +44,7 @@ DEPENDS = [
 RECOMMENDS = ["unrar | unar | libarchive-tools"]
 
 LAUNCHER = f"""#!/bin/sh
-# Glimra launcher (installed by the {APP} .deb)
+# Picora launcher (installed by the {APP} .deb)
 export PYTHONPATH="/opt/{APP}/app${{PYTHONPATH:+:$PYTHONPATH}}"
 exec /opt/{APP}/venv/bin/python -m {APP} "$@"
 """
@@ -183,14 +183,14 @@ def main():
     control = f"""Package: {APP}
 Version: {ver}
 Architecture: amd64
-Maintainer: Glimra <glimra@localhost>
+Maintainer: Picora <picora@localhost>
 Installed-Size: {installed_kb}
 Depends: {", ".join(DEPENDS)}
 Recommends: {", ".join(RECOMMENDS)}
 Section: graphics
 Priority: optional
 Description: fast image and comic viewer
- Glimra opens photos instantly and preloads the neighbouring files, so
+ Picora opens photos instantly and preloads the neighbouring files, so
  browsing a folder with the arrow keys or the mouse wheel feels immediate.
  It reads JPEG, PNG, animated GIF/APNG/WebP, HEIC, AVIF, TIFF, PSD, SVG and
  camera RAW, shows comics inside ZIP/CBZ, RAR/CBR and 7Z without

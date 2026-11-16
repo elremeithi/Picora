@@ -42,7 +42,7 @@ def _configure_rar():
         rarfile.UNRAR_TOOL = unrar
     if seven:
         rarfile.SEVENZIP_TOOL = seven
-    rarfile.BSDTAR_TOOL = "glimra-no-bsdtar-on-windows"
+    rarfile.BSDTAR_TOOL = "picora-no-bsdtar-on-windows"
 
 
 def rar_hint():

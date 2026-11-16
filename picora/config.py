@@ -9,13 +9,20 @@ from . import APP_ID
 
 
 def config_dir() -> Path:
-    override = os.environ.get("GLIMRA_CONFIG_DIR")
+    override = os.environ.get("PICORA_CONFIG_DIR")
     if override:
         d = Path(override)
     elif sys.platform == "win32":
         d = Path(os.environ.get("APPDATA") or Path.home()) / APP_ID
     else:
         d = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / APP_ID
+    legacy = d.parent / "glimra"  # settings folder from before the app was renamed to Picora
+    if not override and not d.exists() and legacy.is_dir():
+        import shutil
+        try:
+            shutil.copytree(legacy, d)
+        except OSError:
+            pass
     d.mkdir(parents=True, exist_ok=True)
     return d
 

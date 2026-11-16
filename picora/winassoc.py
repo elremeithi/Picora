@@ -1,8 +1,8 @@
-"""Windows: list Glimra under "Open with" and Settings > Default apps (per user, no admin).
+"""Windows: list Picora under "Open with" and Settings > Default apps (per user, no admin).
 
-Windows 10/11 don't let programs make themselves the default; this registers Glimra as a
+Windows 10/11 don't let programs make themselves the default; this registers Picora as a
 capable app for its file types, then opens Default apps so the user can pick it.
-Only meaningful for the packaged Glimra.exe.
+Only meaningful for the packaged Picora.exe.
 """
 
 import os
@@ -11,11 +11,14 @@ import sys
 from . import APP_NAME
 from .util import ARCHIVE_EXTS, IMAGE_EXTS
 
-PROGID_IMG = "Glimra.Image"
-PROGID_ARC = "Glimra.Comic"
-CAPS = r"Software\Glimra\Capabilities"
+PROGID_IMG = "Picora.Image"
+PROGID_ARC = "Picora.Comic"
+CAPS = r"Software\Picora\Capabilities"
 # plain .zip/.rar/.7z stay with the archive manager; only comic archives are claimed
 ARC_EXTS = {".cbz", ".cbr", ".cb7"}
+# Entries written before the app was renamed from Glimra; removed whenever we (un)register.
+LEGACY = dict(progids=("Glimra.Image", "Glimra.Comic"), exe="Glimra.exe",
+              app_key=r"Software\Glimra", app_name="Glimra")
 
 
 def available() -> bool:
@@ -49,6 +52,7 @@ def plan():
 
 def register():
     import winreg
+    _remove(**LEGACY)
     for key, name, data in plan():
         with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, key, 0, winreg.KEY_SET_VALUE) as k:
             winreg.SetValueEx(k, name, 0, winreg.REG_SZ, data)
@@ -56,6 +60,12 @@ def register():
 
 
 def unregister():
+    _remove(**LEGACY)
+    _remove((PROGID_IMG, PROGID_ARC), os.path.basename(sys.executable), r"Software\Picora", APP_NAME)
+    _notify()
+
+
+def _remove(progids, exe, app_key, app_name):
     import winreg
 
     def delete_tree(root, path):
@@ -72,26 +82,25 @@ def unregister():
             pass
 
     hk = winreg.HKEY_CURRENT_USER
-    for progid in (PROGID_IMG, PROGID_ARC):
+    for progid in progids:
         delete_tree(hk, rf"Software\Classes\{progid}")
-    delete_tree(hk, rf"Software\Classes\Applications\{os.path.basename(sys.executable)}")
-    delete_tree(hk, r"Software\Glimra")
+    delete_tree(hk, rf"Software\Classes\Applications\{exe}")
+    delete_tree(hk, app_key)
     try:
         with winreg.OpenKey(hk, r"Software\RegisteredApplications", 0, winreg.KEY_SET_VALUE) as k:
-            winreg.DeleteValue(k, APP_NAME)
+            winreg.DeleteValue(k, app_name)
     except OSError:
         pass
     for ext in IMAGE_EXTS | ARC_EXTS:
         try:
             with winreg.OpenKey(hk, rf"Software\Classes\{ext}\OpenWithProgids", 0, winreg.KEY_SET_VALUE) as k:
-                for progid in (PROGID_IMG, PROGID_ARC):
+                for progid in progids:
                     try:
                         winreg.DeleteValue(k, progid)
                     except OSError:
                         pass
         except OSError:
             pass
-    _notify()
 
 
 def open_default_apps():

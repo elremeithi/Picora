@@ -1,9 +1,9 @@
-# Glimra
+# Picora
 
 A fast, keyboard-friendly image and comic viewer for Linux and Windows. It brings the conveniences that
 Windows users know from lightweight viewers to a native Linux app: images open instantly and the
 next ones are already decoded, everything is in a right-click menu, every key can be remapped, and
-it reads comic archives directly. Glimra is original software. It borrows features and familiar
+it reads comic archives directly. Picora is original software. It borrows features and familiar
 shortcuts, but no names, skins or artwork.
 
 Built with **Qt 6 (PySide6)** and **Pillow**, plus pillow-heif (HEIC), rawpy/LibRaw (camera RAW) and
@@ -13,14 +13,14 @@ py7zr / rarfile (archives).
 
 ### Linux Mint, Ubuntu, Debian (one click)
 
-Double-click **`glimra_0.1.0_amd64.deb`** in the file manager, click **Install**, and enter your
+Double-click **`picora_0.1.0_amd64.deb`** in the file manager, click **Install**, and enter your
 password. The Python parts are bundled in the package, so it needs no internet connection and no
-terminal. Glimra then appears in the menu under *Graphics* and in *Open With* for images and comic
+terminal. Picora then appears in the menu under *Graphics* and in *Open With* for images and comic
 archives. To make it your default viewer, right-click a photo, choose *Properties* → *Open With* →
-Glimra → *Set as default*, and do the same for a `.cbz` file if you read comics.
+Picora → *Set as default*, and do the same for a `.cbz` file if you read comics.
 
 Works on 64-bit Mint 21.x and 22.x, LMDE 6, Ubuntu 22.04+ and Debian 12+. To remove it, use the
-Software Manager or `sudo apt remove glimra`.
+Software Manager or `sudo apt remove picora`.
 
 For RAR/CBR files the package recommends `unrar`. If your system didn't pull it in, install it:
 `sudo apt install unrar`. Either `unar` or `libarchive-tools` works instead.
@@ -28,30 +28,30 @@ For RAR/CBR files the package recommends `unrar`. If your system didn't pull it 
 ### Any distro (script)
 
 ```bash
-tar xzf glimra-0.1.0-linux.tar.gz && cd glimra-0.1.0
+tar xzf picora-0.1.0-linux.tar.gz && cd picora-0.1.0
 ./install.sh                 # apt / dnf / pacman / zypper deps + venv + menu entry
-./install.sh --set-default   # same, and make Glimra the default for images and comics
+./install.sh --set-default   # same, and make Picora the default for images and comics
 ./install.sh --uninstall
 ```
 
-The script puts a private virtualenv in `~/.local/share/glimra`, a `glimra` launcher in `~/.local/bin`,
+The script puts a private virtualenv in `~/.local/share/picora`, a `picora` launcher in `~/.local/bin`,
 and the menu entry and icon in `~/.local/share`.
 
 ### Windows 10 / 11 (64-bit)
 
-Unzip **`Glimra-0.1.0-windows-x64.zip`** anywhere, for example `C:\Apps\Glimra`, and run
-**`Glimra.exe`** (or use `publish\Glimra\Glimra.exe` from this folder). It needs no installation and
+Unzip **`Picora-0.1.0-windows-x64.zip`** anywhere, for example `C:\Apps\Picora`, and run
+**`Picora.exe`** (or use `publish\Picora\Picora.exe` from this folder). It needs no installation and
 no Python. Keep the `_internal` folder next to the exe. This is a folder rather than one big exe so
 that it starts quickly.
 
-To open images with Glimra from Explorer, go to Preferences (Ctrl+,) › General and click **Add
-Glimra to “Open with” and Default apps**. Glimra registers itself for your user only, with no admin
-rights needed, and opens Settings › Default apps, where you pick Glimra for the file types you want.
+To open images with Picora from Explorer, go to Preferences (Ctrl+,) › General and click **Add
+Picora to “Open with” and Default apps**. Picora registers itself for your user only, with no admin
+rights needed, and opens Settings › Default apps, where you pick Picora for the file types you want.
 Windows only lets you, not the app, choose the default. The **Remove** button undoes the
 registration. If you move the folder later, click the button again.
 
 RAR/CBR comics are read through WinRAR or 7-Zip, so have one of them installed (7-Zip is free).
-ZIP/CBZ and 7Z work without either. Settings are stored in `%APPDATA%\glimra\settings.json`.
+ZIP/CBZ and 7Z work without either. Settings are stored in `%APPDATA%\picora\settings.json`.
 
 ### Run from source
 
@@ -68,7 +68,7 @@ pip install -r requirements.txt
 - Opening a file loads its whole folder, in natural order (`img2` before `img10`). You can also sort by date or size, or reverse the order.
 - The neighbouring images are decoded in the background, so the next and previous ones show up at once.
 - Move between images with ←/→, PgUp/PgDn, Space/Backspace, Home/End, the mouse wheel, or the mouse back/forward buttons.
-- At the last image, Glimra can stop, wrap around, or go on to the next folder or archive. Ctrl+PgUp/PgDn jumps between folders and archives directly.
+- At the last image, Picora can stop, wrap around, or go on to the next folder or archive. Ctrl+PgUp/PgDn jumps between folders and archives directly.
 - Opening a file from the file manager reuses the running window. Recent files and drag and drop are supported.
 
 **Formats**
@@ -125,9 +125,9 @@ pip install -r requirements.txt
 
 ## Files
 
-- Settings: `~/.config/glimra/settings.json`. Delete it to reset everything.
+- Settings: `~/.config/picora/settings.json`. Delete it to reset everything.
 - Building packages: `python tools/build_deb.py` (it downloads the Linux wheels once into
   `build/wheels`) and `python tools/build_release.py` work on any OS. `python tools/build_windows.py`
   runs on Windows and needs `pip install -r requirements.txt pyinstaller`.
-- `glimra --check FILES...` decodes files and archives without opening a window and reports any
+- `picora --check FILES...` decodes files and archives without opening a window and reports any
   that fail. Add `--report out.txt` to write the report to a file.
